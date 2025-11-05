@@ -32,8 +32,7 @@ PricingPlan.init(
     },
     plan_type: {
       type: DataTypes.ENUM('daily', 'weekly', 'monthly'),
-      allowNull: false,
-      unique: true
+      allowNull: false
     },
     price: {
       type: DataTypes.DECIMAL(10, 2),
