@@ -105,10 +105,16 @@ async function initialize() {
       await spamDetector.checkAndReplaceUnhealthySessions();
     });
 
-    // Start Telegram bots
+    // Start Telegram bots (non-blocking if credentials are invalid)
     logger.info('🤖 Starting Telegram bots...');
-    await startClientBot();
-    await startAdminBot();
+    try {
+      await startClientBot();
+      await startAdminBot();
+      logger.info('✅ Telegram bots started successfully');
+    } catch (botError) {
+      logger.warn('⚠️  Telegram bots failed to start (check credentials):', botError.message || botError);
+      logger.info('📡 Continuing without bots - HTTP server will still start');
+    }
 
     // Start server
     server.listen(PORT, () => {
